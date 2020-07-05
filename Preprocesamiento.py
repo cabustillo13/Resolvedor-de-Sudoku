@@ -5,7 +5,7 @@ import numpy as np
 #Path absoluto
 path="/home/carlos/Documentos/Otros/Resolvedor-de-Sudoku/Screenshots/"
 #Imagen a analizar
-imagen = cv2.imread(path+"photo1.png")
+imagen = cv2.imread(path+"photo3.png")
 
 #######################################################################
 ################    Funcion para rotar imagen               ###########
@@ -68,12 +68,12 @@ if __name__ == '__main__':
         for i in range(9):
             #A prueba y error determine los valores de los lados de los cuadrados
             nombre = "prueba"+ str(contador) + ".png"
-            imagen1 = recortarCuadrado(imagen,0,h,75,80)
+            imagen1 = recortarCuadrado(imagen,w,h,75,80)
             
             #Procedemos a guardarla
             guardar(imagen1,nombre)
+            
             h=h+80
             contador=contador+1
-        w=w+75
         
-    
+        w=w+75
