@@ -1,4 +1,3 @@
-##PARA CORTAR UNA SOLA IMAGEN
 import cv2
 import numpy as np
 
@@ -26,7 +25,7 @@ def recortar(imagen):
 #######################################################################
 def guardar(imagen,fileb):
     
-    new_path = "/home/carlos/Documentos/Otros/Resolvedor-de-Sudoku/ImagenesRecortadas/"
+    new_path = "/home/carlos/Documentos/Otros/Resolvedor-de-Sudoku/Imagenes/"
     cv2.imwrite(new_path + fileb, imagen)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
