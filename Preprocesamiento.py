@@ -5,7 +5,7 @@ import numpy as np
 #Path absoluto
 path="/home/carlos/Documentos/Otros/Resolvedor-de-Sudoku/Screenshots/"
 #Imagen a analizar
-imagen = cv2.imread(path+"photo0.png")
+imagen = cv2.imread(path+"photo1.png")
 
 #######################################################################
 ################    Funcion para rotar imagen               ###########
@@ -42,7 +42,7 @@ def recortarCuadrado(imagen,x,y,h,w):
 #######################################################################
 def guardar(imagen,fileb):
     
-    new_path = "/home/carlos/Documentos/Otros/Sudoku/Imagenes/"
+    new_path = "/home/carlos/Documentos/Otros/Resolvedor-de-Sudoku/Imagenes/"
     cv2.imwrite(new_path + fileb, imagen)
     cv2.waitKey(0)
     cv2.destroyAllWindows()

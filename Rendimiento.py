@@ -17,9 +17,8 @@ def extraccion(image):
     aux = filters.sobel(aux)                 #Aplicar filtro Sobel o Laplaciano
     
     ##SEGMENTACION
-    ##Solo funciona para imagenes cortadas -> porque sino el fondo afecta mucho el objeto dentro de la imagen
-    #ret, th = cv2.threshold(aux, 0, 255, cv2.THRESH_BINARY+cv2.THRESH_OTSU)
-    #aux= th
+    ret, th = cv2.threshold(aux, 0, 255, cv2.THRESH_BINARY+cv2.THRESH_OTSU)
+    aux= th
         
     ##EXTRACCION DE RASGOS
     #haralick=mahotas.features.haralick(aux).mean(axis=0)
