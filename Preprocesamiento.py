@@ -29,7 +29,7 @@ def recortar(imagen,x):
     return crop_img
 
 #######################################################################
-################    Recortar cuadradito                     ###########
+################    Recortar casilla/cuadrado               ###########
 #######################################################################
 def recortarCuadrado(imagen,x,y,h,w):
     
@@ -69,6 +69,8 @@ if __name__ == '__main__':
             #A prueba y error determine los valores de los lados de los cuadrados
             nombre = "prueba"+ str(contador) + ".png"
             imagen1 = recortarCuadrado(imagen,0,h,75,80)
+            
+            #Procedemos a guardarla
             guardar(imagen1,nombre)
             h=h+80
             contador=contador+1
