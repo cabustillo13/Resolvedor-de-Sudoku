@@ -76,4 +76,6 @@ if __name__ == '__main__':
             h=h+80
             contador=contador+1
         
-        w=w+75
+        #Deduccion que se tomo para lograr el punto exacto donde arranca cada casilla
+        w=80*(j+1)
+        

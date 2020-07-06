@@ -25,37 +25,10 @@ def extraccion(image):
     hu = cv2.HuMoments(cv2.moments(aux)).flatten()
     
     ##ANALISIS DE LAS CARACTERISTICAS
-    "Para 2 elementos"
-    #PARA MOMENTOS DE HU
-    #return aux, [hu[0], hu[1]]
-    ##PARA HARALICK
-    #return aux, [haralick[0], haralick[1]]
-    
-    "Para 3 elementos"
     #PARA MOMENTOS DE HU
     return aux, [hu[0], hu[1], hu[3]]
-    #PARA HARALICK
-    #return aux, [haralick[0], haralick[1], haralick[3]]
-    
-    "Para 4 elementos"
-    #PARA HARALICK
-    #return aux, [haralick[0], haralick[1], haralick[2],haralick[3]]
-    #PARA MOMENTOS DE HU
-    #return aux, [hu[0], hu[1], hu[2], hu[3]]
-    
-    "Para todos los elementos -> datos en crudo"
-    #PARA MOMENTOS DE HU
-    #return aux, hu
-    #PARA HARALICK
-    #return aux, haralick
-    
-    "Para 8 elementos"
-    #return aux, [haralick[2], haralick[3], haralick[4], haralick[5], haralick[6], haralick[7], haralick[9], haralick[11]]
-    
-    "Hu + Haralick"
-    #return aux, [hu[0], hu[1], hu[3], haralick[0], haralick[1],haralick[3]]
 
-#Elemento de ferreteria
+#Elemento de sudoku
 class Elemento:
     def __init__(self):
         self.pieza = None
@@ -63,7 +36,7 @@ class Elemento:
         self.caracteristica = []
         self.distancia = 0
 
-#Analisis de la base de datos (YTrain)
+#Analisis de la base de datos (Train)
 ##Entrenamiento de la base de datos
 def analisis_de_datos():
 
