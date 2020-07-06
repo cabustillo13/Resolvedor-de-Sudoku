@@ -111,20 +111,26 @@ if __name__ == '__main__':
     #sudoku_grid = '..5..96.......3.2.97......8.1...8...4...5...7...6...9.5......89.4.2.......25..1..'
     
     #Ingreso de fila individual
-    linea1='.4./.../79.'
-    linea2='9.6/..8/...'
-    linea3='2../4../.56'
-    linea4='164/.../9..'
-    linea5='.../135/...'
-    linea6='..8/.../271'
-    linea7='67./..4/..9'
-    linea8='.../6../1.7'
-    linea9='.81/.../.2.'
-    lineas = linea1 + linea2 + linea3 + linea4 + linea5 + linea6 + linea7 + linea8 + linea9
-    lineas=lineas.translate(None,'/')
+    #linea1='.4./.../79.'
+    #linea2='9.6/..8/...'
+    #linea3='2../4../.56'
+    #linea4='164/.../9..'
+    #linea5='.../135/...'
+    #linea6='..8/.../271'
+    #linea7='67./..4/..9'
+    #linea8='.../6../1.7'
+    #linea9='.81/.../.2.'
+    #lineas = linea1 + linea2 + linea3 + linea4 + linea5 + linea6 + linea7 + linea8 + linea9
+    #lineas=lineas.translate(None,'/')
     
     #print(sudoku_grid)
     #print(lineas)
+    
+    #Con manejador de archivos
+    archivo = open("vector.txt","r")
+    lineas = archivo.read()
+    lineas = lineas.replace('\r', '').replace('\n', '')
+    archivo.close() 
     
     print ("original:")
     #display(grid_values_original(sudoku_grid))
@@ -133,6 +139,3 @@ if __name__ == '__main__':
     print ("solucion:")
     #display(solve(sudoku_grid))
     display(solve(lineas))
-
-
-
