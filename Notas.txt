@@ -1,3 +1,2 @@
--Actualizar imagenes de rendimiento para KNN y KMeans
-
+-Considerar otro extractor de caracteristicas como ser el color
 
