@@ -5,7 +5,8 @@ import numpy as np
 #Path absoluto
 path="/home/carlos/Documentos/Otros/Resolvedor-de-Sudoku/Screenshots/"
 #Imagen a analizar
-imagen = cv2.imread(path+"photo0.png")
+numero = input("Ingrese numero de imagen: ")
+imagen = cv2.imread(path+"photo"+str(numero)+".png")
 
 #######################################################################
 ################    Funcion para rotar imagen               ###########

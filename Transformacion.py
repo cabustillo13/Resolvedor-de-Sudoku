@@ -17,7 +17,7 @@ def recortar(imagen):
     #Determinar dimensiones de la imagen
     height, width, channels = imagen.shape
 
-    crop_img = imagen[10:height-10, 10:width-10]
+    crop_img = imagen[12:height-12, 12:width-12]
     return crop_img
  
 #######################################################################

@@ -391,7 +391,7 @@ print("Inicializacion KKN\n")
 datos = analisis_de_datos()
 prueba = analisis_de_prueba()
 
-MAX = 120
+MAX = 20
 ans = []
 
 for k in range(1, MAX):
@@ -834,7 +834,7 @@ prueba = analisis_de_prueba()
 means = entrenamiento_kmeans(datos)
 
 #Por mas que varies MAX siempre deberias obtener una linea recta horizontal
-MAX = 50
+MAX = 20
 
 ans = []
 
