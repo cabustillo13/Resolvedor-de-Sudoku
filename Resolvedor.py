@@ -1,6 +1,6 @@
 #Resolvedor de SUDOKU 3X3
 #Modificado por: Carlos Bustillo
-#Original:https://github.com/jorditorresBCN/Sudoku/blob/master/Sudoku.ipynb
+#Bibliografia:https://github.com/jorditorresBCN/Sudoku/blob/master/Sudoku.ipynb
 
 rows = 'ABCDEFGHI'
 cols = '123456789'

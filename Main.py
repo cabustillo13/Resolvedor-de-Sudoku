@@ -1,5 +1,3 @@
-#Codigo limpio de Clasificacion.py
-
 import numpy as np
 from matplotlib import pyplot as plt
 import matplotlib.patches as mpatches
