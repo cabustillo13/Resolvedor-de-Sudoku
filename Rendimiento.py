@@ -12,11 +12,6 @@ def extraccion(image):
     #image = cv2.resize(image, (60, 55))          #Convertir la imagen a 60x55
     aux = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY) #Convertir a escala de grises
     
-    ##CONTADOR DE OBJETOS DENTRO DE LA IMAGEN CON ALGORITMO CANNY
-    bordes = cv2.Canny(aux, 10, 140)                                                #Estos valores de umbrales se obtuvieron de prueba y error
-    ctns, _ = cv2.findContours(bordes, cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)   #Para OpenCV4
-    contornos = len(ctns)
-    
     ##FILTRACION
     aux = cv2.GaussianBlur(aux, (3, 3), 0)   #Aplicar filtro gaussiano
     #aux = filters.sobel(aux)                 #Aplicar filtro Sobel o Laplaciano
@@ -31,8 +26,7 @@ def extraccion(image):
     
     ##ANALISIS DE LAS CARACTERISTICAS
     #PARA MOMENTOS DE HU
-    #return aux, [hu[0], hu[1], hu[3]]
-    return aux, [hu[0], hu[1], contornos]
+    return aux, [hu[0], hu[1], hu[3]]
 
 #Elemento de sudoku
 class Elemento:
@@ -46,7 +40,6 @@ class Elemento:
 ##Entrenamiento de la base de datos
 def analisis_de_datos():
 
-    punto = io.ImageCollection('./Imagenes/Train/YPunto/*.png:./Imagenes/Train/YPunto/*.jpg')
     uno = io.ImageCollection('./Imagenes/Train/Y1/*.png:./Imagenes/Train/Y1/*.jpg')
     dos = io.ImageCollection('./Imagenes/Train/Y2/*.png:./Imagenes/Train/Y2/*.jpg')
     tres = io.ImageCollection('./Imagenes/Train/Y3/*.png:./Imagenes/Train/Y3/*.jpg')
@@ -59,16 +52,6 @@ def analisis_de_datos():
     
     datos = []
     i = 0
-
-    # Analisis de la casilla vacia en la base de datos
-    iter = 0
-    for objeto in punto:
-        datos.append(Elemento())
-        datos[i].pieza = 'punto'
-        datos[i].image, datos[i].caracteristica = extraccion(objeto)
-        i += 1
-        iter += 1
-    print("Punto OK")
 
     # Analisis del numero uno en base de datos
     iter = 0
@@ -166,7 +149,6 @@ def analisis_de_datos():
 ##Prueba de la base de datos (Test)
 def analisis_de_prueba():
 
-    punto_prueba = io.ImageCollection('./Imagenes/Test/YPunto/*.png:./Imagenes/Test/YPunto/*.jpg')
     uno_prueba = io.ImageCollection('./Imagenes/Test/Y1/*.png:./Imagenes/Test/Y1/*.jpg')
     dos_prueba = io.ImageCollection('./Imagenes/Test/Y2/*.png:./Imagenes/Test/Y2/*.jpg')
     tres_prueba = io.ImageCollection('./Imagenes/Test/Y3/*.png:./Imagenes/Test/Y3/*.jpg')
@@ -179,16 +161,6 @@ def analisis_de_prueba():
     
     prueba = []
     i = 0
-
-    # Analisis de la casilla vacia en base de datos
-    iter = 0
-    for objeto in punto_prueba:
-        prueba.append(Elemento())
-        prueba[i].pieza = 'punto'
-        prueba[i].image, prueba[i].caracteristica = extraccion(objeto)
-        i += 1
-        iter += 1
-    print("Punto OK")
 
     # Analisis del numero uno en base de datos
     iter = 0
@@ -310,39 +282,36 @@ def knn(k, datos, prueba):
                     datos[i-1] = aux
                     swap = True
 
-        eval = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        eval = [0, 0, 0, 0, 0, 0, 0, 0, 0]
 
         for i in range(0, k):
 
-            if (datos[i].pieza == 'punto'):
+            if (datos[i].pieza == 'uno'):
                 eval[0] += 10
 
-            if (datos[i].pieza == 'uno'):
-                eval[1] += 10
-
             if (datos[i].pieza == 'dos'):
-                eval[2] += 10
+                eval[1] += 10
                 
             if (datos[i].pieza == 'tres'):
-                eval[3] += 10
+                eval[2] += 10
             
             if (datos[i].pieza == 'cuatro'):
-                eval[4] += 10
+                eval[3] += 10
 
             if (datos[i].pieza == 'cinco'):
-                eval[5] += 10
+                eval[4] += 10
 
             if (datos[i].pieza == 'seis'):
-                eval[6] += 10
+                eval[5] += 10
                 
             if (datos[i].pieza == 'siete'):
-                eval[7] += 10
+                eval[6] += 10
                 
             if (datos[i].pieza == 'ocho'):
-                eval[8] += 10
+                eval[7] += 10
                 
             if (datos[i].pieza == 'nueve'):
-                eval[9] += 10
+                eval[8] += 10
 
         aux = eval[0]
         if (aux < eval[1]):
@@ -361,29 +330,24 @@ def knn(k, datos, prueba):
             aux = eval[7]
         if (aux < eval[8]):
             aux = eval[8]
-        if (aux < eval[9]):
-            aux = eval[9]
             
-
         if (aux == eval[0]):
-            pieza = 'punto'
-        if (aux == eval[1]):
             pieza = 'uno'
-        if (aux == eval[2]):
+        if (aux == eval[1]):
             pieza = 'dos'
-        if (aux == eval[3]):
+        if (aux == eval[2]):
             pieza = 'tres'
-        if (aux == eval[4]):
+        if (aux == eval[3]):
             pieza = 'cuatro'
-        if (aux == eval[5]):
+        if (aux == eval[4]):
             pieza = 'cinco'
-        if (aux == eval[6]):
+        if (aux == eval[5]):
             pieza = 'seis'
-        if (aux == eval[7]):
+        if (aux == eval[6]):
             pieza = 'siete'
-        if (aux == eval[8]):
+        if (aux == eval[7]):
             pieza = 'ocho'
-        if (aux == eval[9]):
+        if (aux == eval[8]):
             pieza = 'nueve'
         
         if (t.pieza == pieza):
@@ -433,8 +397,7 @@ def entrenamiento_kmeans(datos):
     
     # MEANS INICIALES
     for element in datos:
-        if (element.pieza == 'punto'):
-            punto_datos.append(element)
+    
         if (element.pieza == 'uno'):
             uno_datos.append(element)
         if (element.pieza == 'dos'):
@@ -454,7 +417,6 @@ def entrenamiento_kmeans(datos):
         if (element.pieza == 'nueve'):
             nueve_datos.append(element)
 
-    punto_mean = list(random.choice(punto_datos).caracteristica)
     uno_mean = list(random.choice(uno_datos).caracteristica)
     dos_mean = list(random.choice(dos_datos).caracteristica)
     tres_mean = list(random.choice(tres_datos).caracteristica)
@@ -465,7 +427,6 @@ def entrenamiento_kmeans(datos):
     ocho_mean = list(random.choice(ocho_datos).caracteristica)
     nueve_mean = list(random.choice(nueve_datos).caracteristica)
 
-    punto_flag = True
     uno_flag = True
     dos_flag = True
     tres_flag = True
@@ -476,7 +437,6 @@ def entrenamiento_kmeans(datos):
     ocho_flag = True
     nueve_flag = True
 
-    punto_len = [0, 0, 0]
     uno_len = [0, 0, 0]
     dos_len = [0, 0, 0]
     tres_len = [0, 0, 0]
@@ -490,7 +450,6 @@ def entrenamiento_kmeans(datos):
     iter = 0
     while (iter < 20):
 
-        punto_datos = []
         uno_datos = []
         dos_datos = []
         tres_datos = []
@@ -503,7 +462,7 @@ def entrenamiento_kmeans(datos):
         
         # ASIGNACION
         for element in datos:
-            sum_punto = 0
+
             sum_uno = 0
             sum_dos = 0
             sum_tres = 0
@@ -515,7 +474,7 @@ def entrenamiento_kmeans(datos):
             sum_nueve = 0
             
             for i in range(0, len(element.caracteristica)-1):
-                sum_punto += np.power(np.abs(punto_mean[i] - element.caracteristica[i]), 2)
+
                 sum_uno += np.power(np.abs(uno_mean[i] - element.caracteristica[i]), 2)
                 sum_dos += np.power(np.abs(dos_mean[i] - element.caracteristica[i]), 2)
                 sum_tres += np.power(np.abs(tres_mean[i] - element.caracteristica[i]), 2)
@@ -526,7 +485,6 @@ def entrenamiento_kmeans(datos):
                 sum_ocho += np.power(np.abs(ocho_mean[i] - element.caracteristica[i]), 2)
                 sum_nueve += np.power(np.abs(nueve_mean[i] - element.caracteristica[i]), 2)
                 
-            dist_punto = np.sqrt(sum_punto)
             dist_uno = np.sqrt(sum_uno)
             dist_dos = np.sqrt(sum_dos)
             dist_tres = np.sqrt(sum_tres)
@@ -537,7 +495,7 @@ def entrenamiento_kmeans(datos):
             dist_ocho = np.sqrt(sum_ocho)
             dist_nueve = np.sqrt(sum_nueve)
             
-            aux = dist_punto
+            aux = dist_nueve
             if (dist_uno < aux):
                 aux = dist_uno
             if (dist_dos < aux):
@@ -554,12 +512,8 @@ def entrenamiento_kmeans(datos):
                 aux = dist_siete
             if (dist_ocho < aux):
                 aux = dist_ocho
-            if (dist_nueve < aux):
-                aux = dist_nueve
 
-            if (aux == dist_punto):
-                punto_datos.append(element.caracteristica)
-            elif (aux == dist_uno):
+            if (aux == dist_uno):
                 uno_datos.append(element.caracteristica)
             elif(aux == dist_dos):
                 dos_datos.append(element.caracteristica)
@@ -579,12 +533,7 @@ def entrenamiento_kmeans(datos):
                 nueve_datos.append(element.caracteristica)
 
         # ACTUALIZACION
-        sum_punto = [0, 0, 0]
-        for obj0 in punto_datos:
-            sum_punto[0] += obj0[0]
-            sum_punto[1] += obj0[1]
-            sum_punto[2] += obj0[2]
-        
+                
         sum_uno = [0, 0, 0]
         for obj1 in uno_datos:
             sum_uno[0] += obj1[0]
@@ -639,10 +588,6 @@ def entrenamiento_kmeans(datos):
             sum_nueve[1] += obj9[1]
             sum_nueve[2] += obj9[2]
 
-        punto_mean[0] = sum_punto[0] / len(punto_datos)
-        punto_mean[1] = sum_punto[1] / len(punto_datos)
-        punto_mean[2] = sum_punto[2] / len(punto_datos)
-
         uno_mean[0] = sum_uno[0] / len(uno_datos)
         uno_mean[1] = sum_uno[1] / len(uno_datos)
         uno_mean[2] = sum_uno[2] / len(uno_datos)
@@ -680,10 +625,6 @@ def entrenamiento_kmeans(datos):
         nueve_mean[2] = sum_nueve[2] / len(nueve_datos)
         
         # CONDICION DE SALIDA
-        if (punto_mean == punto_len):
-            punto_flag = False
-        else:
-            punto_len = punto_mean
 
         if (uno_mean == uno_len):
             uno_flag = False
@@ -732,27 +673,25 @@ def entrenamiento_kmeans(datos):
 
         iter += 1
         
-    return [punto_mean, uno_mean, dos_mean, tres_mean, cuatro_mean, cinco_mean, seis_mean, siete_mean, ocho_mean, nueve_mean]
+    return [uno_mean, dos_mean, tres_mean, cuatro_mean, cinco_mean, seis_mean, siete_mean, ocho_mean, nueve_mean]
 
 #Testeo de KMeans (YTest)
 def kmeans(prueba, means):
     
-    punto_mean = means[0]
-    uno_mean = means[1]
-    dos_mean = means[2]
-    tres_mean = means[3]
-    cuatro_mean = means[4]
-    cinco_mean = means[5]
-    seis_mean = means[6]
-    siete_mean = means[7]
-    ocho_mean = means[8]
-    nueve_mean = means[9]
+    uno_mean = means[0]
+    dos_mean = means[1]
+    tres_mean = means[2]
+    cuatro_mean = means[3]
+    cinco_mean = means[4]
+    seis_mean = means[5]
+    siete_mean = means[6]
+    ocho_mean = means[7]
+    nueve_mean = means[8]
     
     correct = 0
 
     for t in prueba:
 
-        sum_punto = 0
         sum_uno = 0
         sum_dos = 0
         sum_tres = 0
@@ -764,7 +703,7 @@ def kmeans(prueba, means):
         sum_nueve = 0
         
         for i in range(0, len(t.caracteristica)-1):
-            sum_punto += np.power(np.abs(t.caracteristica[i] - punto_mean[i]), 2)
+    
             sum_uno += np.power(np.abs(t.caracteristica[i] - uno_mean[i]), 2)
             sum_dos += np.power(np.abs(t.caracteristica[i] - dos_mean[i]), 2)
             sum_tres += np.power(np.abs(t.caracteristica[i] - tres_mean[i]), 2)
@@ -775,7 +714,6 @@ def kmeans(prueba, means):
             sum_ocho += np.power(np.abs(t.caracteristica[i] - ocho_mean[i]), 2)
             sum_nueve += np.power(np.abs(t.caracteristica[i] - nueve_mean[i]), 2)
 
-        dist_punto = np.sqrt(sum_punto)
         dist_uno = np.sqrt(sum_uno)
         dist_dos = np.sqrt(sum_dos)
         dist_tres = np.sqrt(sum_tres)
@@ -786,7 +724,7 @@ def kmeans(prueba, means):
         dist_ocho = np.sqrt(sum_ocho)
         dist_nueve = np.sqrt(sum_nueve)
         
-        aux = dist_punto
+        aux = dist_nueve
         if (dist_uno < aux):
             aux = dist_uno
         if (dist_dos < aux):
@@ -803,11 +741,7 @@ def kmeans(prueba, means):
             aux = dist_siete
         if (dist_ocho < aux):
             aux = dist_ocho
-        if (dist_nueve < aux):
-            aux = dist_nueve
 
-        if (aux == dist_punto):
-            pieza = 'punto'
         if (aux == dist_uno):
             pieza = 'uno'
         if (aux == dist_dos):
