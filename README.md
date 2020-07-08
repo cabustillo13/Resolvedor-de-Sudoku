@@ -36,3 +36,8 @@ Contiene todas las funciones que se utilizan para preprocesamiento y transformac
 
 Se plantea un algoritmo KNN y KMeans y se evaluan todas las imágenes de las carpeta Test, y así determinar su rendimiento del porcentaje de predicciones.
 AL final se eligíó KNN porque presenta un rendimiento mayor.
+
+7) vector.txt
+
+Contiene todos los elementos extraídos del screenshot (donde se recorrio las casillas de izquierda a derecha, de arriba hacia abajo).
+Según Rendimiento.py, el algoritmo KNN presento un rendimiento del 97% respecto a todas las imágenes analizadas en el Test. En caso, de algún error en el reconocimiento de los números existe la opción de cambiar manualmente una predicción de la casilla en el vector.txt.
