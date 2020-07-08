@@ -22,7 +22,8 @@ Para la extracción de características se utilizo los momentos de Hu: 1 y 2, fi
 Lo que hace es resolver el sudoku.
 Se presenta un algoritmo de satisfacción de restricciones con backtracking.
 
-Otros programas
+Otros programas:
+
 5) Funciones.py
 Contiene todas las funciones que se utilizan para preprocesamiento y transformación de la imagen.
 
