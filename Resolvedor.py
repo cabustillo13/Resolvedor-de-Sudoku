@@ -106,7 +106,7 @@ def solve(grid):
     values = grid_values(grid)
     return search(values)
 
-#El main
+#Main
 if __name__ == '__main__':
     
     #Con manejador de archivos
