@@ -12,10 +12,6 @@ import mahotas
     
 def extraccion(image):
     
-    ##TRANSFORMACION
-    #Recordar hacer la transformacion de la imagen con el programa Transformacion.py
-    image = cv2.resize(image, (500, 400))         #Convertir la imagen de 1220x1080 a 500x400
-    
     ##PRE PROCESAMIENTO
     aux = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY) #Convertir a escala de grises
     
@@ -32,11 +28,10 @@ def extraccion(image):
     
     ##ANALISIS DE LAS CARACTERISTICAS
     #PARA MOMENTOS DE HU
-    return aux, [hu[0], hu[1], hu[3]]
+    return aux, [hu[0], hu[1]]
 
 #Analisis de la base de datos (YTrain)
 ##Entrenamiento de la base de datos 
-punto = io.ImageCollection('./Imagenes/Train/YPunto/*.png:./Imagenes/Train/YPunto/*.jpg')
 uno = io.ImageCollection('./Imagenes/Train/Y1/*.png:./Imagenes/Train/Y1/*.jpg')
 dos = io.ImageCollection('./Imagenes/Train/Y2/*.png:./Imagenes/Train/Y2/*.jpg')
 tres = io.ImageCollection('./Imagenes/Train/Y3/*.png:./Imagenes/Train/Y3/*.jpg')
@@ -58,16 +53,6 @@ class Elemento:
 #Analisis de datos
 datos = []
 i = 0
-
-# Analisis de la casilla vacia
-iter = 0
-for objeto in punto:
-    datos.append(Elemento())
-    datos[i].pieza = '.'
-    datos[i].image, datos[i].caracteristica = extraccion(objeto)
-    i += 1
-    iter += 1
-print("Puntos OK")
 
 # Analisis del numero uno
 iter = 0
@@ -174,35 +159,45 @@ for numero in range(81):
 
     nombre = './Imagenes/prueba'+str(numero)+'.png'
     image = io.imread(nombre)
+    
+    ##CONTADOR DE OBJETOS DENTRO DE LA IMAGEN CON ALGORITMO CANNY
+    bordes = cv2.Canny(image, 10, 140)                                                #Estos valores de umbrales se obtuvieron de prueba y error
+    ctns, _ = cv2.findContours(bordes, cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)     #Para OpenCV4
+    contornos = len(ctns)
+    
+    if (contornos != 0): #Osea que es distinto a una casilla vacia -> en las casillas vacias el algoritmo marca cero porque no encuenta nada
+    
+        test.image, test.caracteristica = extraccion(image)
+        test.pieza = '1' # label inicial 
 
-    test.image, test.caracteristica = extraccion(image)
-    test.pieza = '1' # label inicial 
-
-    i = 0
-    sum = 0
-    for ft in datos[0].caracteristica:
-        sum = sum + np.power(np.abs(test.caracteristica[i] - ft), 2)
-        i += 1
-    d = np.sqrt(sum)
-
-    for element in datos:
-        sum = 0
         i = 0
-        for ft in (element.caracteristica):
-            sum = sum + np.power(np.abs((test.caracteristica[i]) - ft), 2)
+        sum = 0
+        for ft in datos[0].caracteristica:
+            sum = sum + np.power(np.abs(test.caracteristica[i] - ft), 2)
             i += 1
-    
-        element.distancia = np.sqrt(sum)
-    
-        if (sum < d):
-            d = sum
-            test.pieza = element.pieza
+        d = np.sqrt(sum)
 
+        for element in datos:
+            sum = 0
+            i = 0
+            for ft in (element.caracteristica):
+                sum = sum + np.power(np.abs((test.caracteristica[i]) - ft), 2)
+                i += 1
+    
+            element.distancia = np.sqrt(sum)
+    
+            if (sum < d):
+                d = sum
+                test.pieza = element.pieza
+    
+    else:
+        test.pieza = '.'
+        
     #print("Prediccion para KNN con K=1: ")    
     #print(test.pieza)
     if (numero == 0): vector =  str(test.pieza)
-    else: vector = vector + str(test.pieza) 
-    
+    else: vector = vector + str(test.pieza)
+        
 print(vector)
 #Aca trabajamos con manejadores de archivo
 archivo = open("vector.txt","w")

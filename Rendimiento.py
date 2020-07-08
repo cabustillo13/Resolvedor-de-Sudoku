@@ -12,6 +12,11 @@ def extraccion(image):
     #image = cv2.resize(image, (60, 55))          #Convertir la imagen a 60x55
     aux = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY) #Convertir a escala de grises
     
+    ##CONTADOR DE OBJETOS DENTRO DE LA IMAGEN CON ALGORITMO CANNY
+    bordes = cv2.Canny(aux, 10, 140)                                                #Estos valores de umbrales se obtuvieron de prueba y error
+    ctns, _ = cv2.findContours(bordes, cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)   #Para OpenCV4
+    contornos = len(ctns)
+    
     ##FILTRACION
     aux = cv2.GaussianBlur(aux, (3, 3), 0)   #Aplicar filtro gaussiano
     #aux = filters.sobel(aux)                 #Aplicar filtro Sobel o Laplaciano
@@ -26,7 +31,8 @@ def extraccion(image):
     
     ##ANALISIS DE LAS CARACTERISTICAS
     #PARA MOMENTOS DE HU
-    return aux, [hu[0], hu[1], hu[3]]
+    #return aux, [hu[0], hu[1], hu[3]]
+    return aux, [hu[0], hu[1], contornos]
 
 #Elemento de sudoku
 class Elemento:

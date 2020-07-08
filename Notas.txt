@@ -1,2 +1,0 @@
--Considerar otro extractor de caracteristicas como ser el color
-
