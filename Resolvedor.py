@@ -2,111 +2,115 @@
 #Modificado por: Carlos Bustillo
 #Bibliografia:https://github.com/jorditorresBCN/Sudoku/blob/master/Sudoku.ipynb
 
-rows = 'ABCDEFGHI'
-cols = '123456789'
+# Diccionario con los numeros de la grilla
+def resolver(grilla):
+    
+    valores = valoresGrilla(grilla)
+    return buscar(valores)
 
-def cross(A, B):
-    "Cross product of elements in A and elements in B."
+# Intercambio de elementos
+def intercambiar(A, B):
+    
     return [a+b for a in A for b in B]
 
-boxes = cross(rows, cols)
-row_units = [cross(r, cols) for r in rows]
-column_units = [cross(rows, c) for c in cols]
-square_units = [cross(rs, cs) for rs in ('ABC','DEF','GHI') for cs in ('123','456','789')]
-
-unitlist = row_units + column_units + square_units
-
-units = dict((s, [u for u in unitlist if s in u]) for s in boxes)
-peers = dict((s, set(sum(units[s],[]))-set([s])) for s in boxes)
-
-#Para mostrar la grilla
-def display(values):  
-    width = 1+max(len(values[s]) for s in boxes)
-    line = '+'.join(['-'*(width*3)]*3)
-    for r in rows:
-        print(''.join(values[r+c].center(width)+('|' if c in '36' else '')
-                      for c in cols))
+# Para mostrar la grilla
+def mostrar(numeros):  
+    ancho = 1+max(len(numeros[s]) for s in casillas)
+    line = '+'.join(['-'*(ancho*3)]*3)
+    for r in filas:
+        print(''.join(numeros[r+c].center(ancho)+('|' if c in '36' else '')
+                      for c in columnas))
         if r in 'CF': print(line)
-    return
 
-def grid_values_original(grid):
-    return dict(zip(boxes, grid))
+# Definir valores iniciales
+def valoresIniciales(grilla):
+    return dict(zip(casillas, grilla))
 
-def grid_values(grid):
-    values = []
-    for c in grid:
+# Definir valores en la grilla
+def valoresGrilla(grilla):
+    numeros = []
+    for c in grilla:
         if c == '.':
-            values.append('123456789')
+            numeros.append('123456789')
         elif c in '123456789':
-            values.append(c)
-    return dict(zip(boxes, values))
+            numeros.append(c)
+    return dict(zip(casillas, numeros))
 
-#Elimina los valores que ya estan dentro de la grilla
-def eliminate(values):
-    """Eliminate values from peers of each box with a single value.
-    """
+# Elimina los valores que ya estan dentro de la grilla
+def eliminar(numeros):
     
-    solved_values = [box for box in values.keys() if len(values[box]) == 1]
+    solved_values = [box for box in numeros.keys() if len(numeros[box]) == 1]
     for box in solved_values:
-        digit = values[box]
-        for peer in peers[box]:
-            values[peer] = values[peer].replace(digit,'')
-    return values
+        digit = numeros[box]
+        for vecino in vecinos[box]:
+            numeros[vecino] = numeros[vecino].replace(digit,'')
+    return numeros
 
-def only_choice(values):
+def unica_opcion(numeros):
     for unit in unitlist:
         for digit in '123456789':
-            dplaces = [box for box in unit if digit in values[box]]
+            dplaces = [box for box in unit if digit in numeros[box]]
             if len(dplaces) == 1:
-                values[dplaces[0]] = digit
-    return values
+                numeros[dplaces[0]] = digit
+    return numeros
 
-def reduce_sudoku(values):
+def reduce_sudoku(numeros):
     stalled = False
     while not stalled:
         # Check how many boxes have a determined value
-        solved_values_before = len([box for box in values.keys() if len(values[box]) == 1])
+        solved_values_before = len([box for box in numeros.keys() if len(numeros[box]) == 1])
 
         # se the Eliminate Strategy
-        values = eliminate(values)
+        numeros = eliminar(numeros)
 
         # Use the Only Choice Strategy
-        values = only_choice(values)
+        numeros = unica_opcion(numeros)
 
         # Check how many boxes have a determined value, to compare
-        solved_values_after = len([box for box in values.keys() if len(values[box]) == 1])
+        solved_values_after = len([box for box in numeros.keys() if len(numeros[box]) == 1])
         # If no new values were added, stop the loop.
         stalled = solved_values_before == solved_values_after
         # Sanity check, return False if there is a box with zero available values:
-        if len([box for box in values.keys() if len(values[box]) == 0]):
+        if len([box for box in numeros.keys() if len(numeros[box]) == 0]):
             return False
-    return values
+    return numeros
 
-def search(values):
-    values = reduce_sudoku(values)
-    if values is False:
-        return False ## Failed earlier
-    if all(len(values[s]) == 1 for s in boxes): 
-        return values ## Solved!
+def buscar(numeros):
+    numeros = reduce_sudoku(numeros)
+    if numeros is False:
+        return False    ##Fallo
+    if all(len(numeros[s]) == 1 for s in casillas): 
+        return numeros  ## Listo
     
-    # Choose one of the unfilled squares with the fewest possibilities
-    unfilled_squares= [(len(values[s]), s) for s in boxes if len(values[s]) > 1]
+    # Choose one of the unfilled boxes
+    unfilled_squares= [(len(numeros[s]), s) for s in casillas if len(numeros[s]) > 1]
     n,s = min(unfilled_squares)
     
-    # recurrence to solve each one of the resulting sudokus
-    for value in values[s]:
-        nova_sudoku = values.copy()
+    # Solve the next boxes
+    for value in numeros[s]:
+        nova_sudoku = numeros.copy()
         nova_sudoku[s] = value
-        attempt = search(nova_sudoku)
+        attempt = buscar(nova_sudoku)
         if attempt:
             return attempt
 
-def solve(grid):
-    # Create a dictionary of values from the grid
-    values = grid_values(grid)
-    return search(values)
+filas = 'ABCDEFGHI'
+columnas = '123456789'
 
-#Main
+casillas = intercambiar(filas, columnas)
+fila_units = [intercambiar(r, columnas) for r in filas]
+columna_units = [intercambiar(filas, c) for c in columnas]
+cuadrado_units = [intercambiar(rs, cs) for rs in ('ABC','DEF','GHI') for cs in ('123','456','789')]
+
+unitlist = fila_units + columna_units + cuadrado_units
+
+unidades = dict((s, [u for u in unitlist if s in u]) for s in casillas)
+vecinos = dict((s, set(sum(unidades[s],[]))-set([s])) for s in casillas)
+
+###########################################
+####                MAIN               ####
+###########################################
+
 if __name__ == '__main__':
     
     #Con manejador de archivos
@@ -115,9 +119,8 @@ if __name__ == '__main__':
     #lineas = lineas.replace('\r', '').replace('\n', '')
     archivo.close() 
     
-    print ("original:")
-    display(grid_values_original(lineas))
+    print ("Original:")
+    mostrar(valoresIniciales(lineas))
     print (" ")
-    print ("solucion:")
-    display(solve(lineas))
-
+    print ("Solucion:")
+    mostrar(resolver(lineas))
