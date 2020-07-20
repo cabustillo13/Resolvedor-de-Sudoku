@@ -1,6 +1,6 @@
 # Resolvedor-de-Sudoku
 
-Ver mi nota: **https://medium.com/@carlosbustillo/solve-sudoku-9x9-with-computer-vision-and-a-constraint-satisfaction-algorithm-in-python-7bb27769c1eb**
+**Este código fue publicado en:** https://medium.com/@carlosbustillo/solve-sudoku-9x9-with-computer-vision-and-a-constraint-satisfaction-algorithm-in-python-7bb27769c1eb
 
 Programa en python 2.7 para resolver un sudoku de la app para Android "Sudoku" de genina.com.
 Se toma un screenshot del juego (se obtiene una imagen de 720x1280), luego se extrae información útil a partir de visión artificial y posteriormente se analiza con un algoritmo de satisfacción de restricciones con backtracking. 
