@@ -27,7 +27,7 @@ Para la extracción de características se utilizo los momentos de Hu: 1 y 2, fi
 
 Lo que hace es resolver el sudoku.
 Se presenta un algoritmo de satisfacción de restricciones con backtracking.
-Tome como referencia este repositorio: https://github.com/jorditorresBCN/Sudoku
+Para esta etapa tome como referencia este repositorio: https://github.com/jorditorresBCN/Sudoku
 
 5) Run Interfaz.py
 
