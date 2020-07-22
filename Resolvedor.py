@@ -1,6 +1,7 @@
-#Resolvedor de SUDOKU 3X3
+#Resolvedor de SUDOKU 9X9
 #Modificado por: Carlos Bustillo
 #Bibliografia:https://github.com/jorditorresBCN/Sudoku/blob/master/Sudoku.ipynb
+import numpy as np
 
 # Diccionario con los numeros de la grilla
 def resolver(grilla):
@@ -119,8 +120,14 @@ if __name__ == '__main__':
     #lineas = lineas.replace('\r', '').replace('\n', '')
     archivo.close() 
     
-    print ("Original:")
+    print ("\nOriginal:")
     mostrar(valoresIniciales(lineas))
     print (" ")
     print ("Solucion:")
     mostrar(resolver(lineas))
+
+    # Acceder al diccionario
+    a = resolver(lineas)
+    b = sorted(a.items())
+    # Aca trabajamos con manejadores de archivo
+    np.save('Solucion', b) 

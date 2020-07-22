@@ -8,7 +8,13 @@ path="./Screenshots/"
 
 #Imagen a analizar
 numero = input("Ingrese numero de imagen: ")
-imagen = cv2.imread(path+"photo"+str(numero)+".png")
+pathGlobal = path+"photo"+str(numero)+".png"
+imagen = cv2.imread(pathGlobal)
+
+#Con manejador de archivos
+archivo = open("imagen.txt","w")
+archivo.write(pathGlobal)
+archivo.close()
 
 #######################################################################
 ################                    MAIN                    ###########
