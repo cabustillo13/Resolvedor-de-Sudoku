@@ -55,7 +55,9 @@ Mejora la forma en que se visualiza la solución respecto a la screenshot origin
 
 Ejecute el script play.sh en su consola, para ejecutar en un solo paso todo el programa si lo desea.
 Depende de la consola que se tiene, la forma que se ejecuta.
-En mi consola lo ejecuto como: *sh ./play.sh*
+En mi consola lo ejecuto como: 
+
+```sh ./play.sh```
 
 ## **Otros programas:**
 
