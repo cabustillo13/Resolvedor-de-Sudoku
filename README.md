@@ -11,10 +11,14 @@ Se toma un screenshot del juego (se obtiene una imagen de 720x1280), luego se ex
 Lo que hace es extraer cada casilla del sudoku de manera individual y los guarda de manera secuencial como photo#.png (donde # va de 0 a 80).
 Se obtienen imágenes de 80x75
 
+```python Preprocesamiento.py```
+
 2) Run Transformacion.py
 
 Lo que hace es recortar los bordes de cada casilla, por si ha quedado algún borde negro que pueda inferir en nuestro análisis.
 Se obtienen imágenes de 56x51
+
+```python Transformacion.py```
 
 3) Run Main.py
 
@@ -23,15 +27,21 @@ Para este caso se utiliza el algoritmo de Canny para determinar si hay algún n�
 Luego a través de algoritmo KNN se determina que número se encuentra en la casilla.
 Para la extracción de características se utilizo los momentos de Hu: 1 y 2, filtro gaussiano para la filtración y thresholding no supervisada.
 
+```python Main.py```
+
 4) Run Resolvedor.py
 
 Lo que hace es resolver el sudoku.
 Se presenta un algoritmo de satisfacción de restricciones con backtracking.
 Para esta etapa tome como referencia este repositorio: https://github.com/jorditorresBCN/Sudoku
 
+```python Resolvedor.py```
+
 5) Run Interfaz.py
 
 Mejora la forma en que se visualiza la solución respecto a la screenshot original. 
+
+```python Interfaz.py```
 
 **Run programa entero en bash**
 
@@ -49,6 +59,8 @@ Contiene todas las funciones que se utilizan para preprocesamiento y transformac
 
 Se plantea un algoritmo KNN y KMeans y se evaluan todas las imágenes de las carpeta Test, y así determinar su rendimiento del porcentaje de predicciones.
 AL final se eligíó KNN porque presenta un rendimiento mayor.
+
+```python Rendimiento.py```
 
 8) vector.txt
 
